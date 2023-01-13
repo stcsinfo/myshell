@@ -50,4 +50,6 @@ core/session (called if exists on .zshrc/bashrc file)
 used tools
 ![output](modules/readme/output.png)
 
-**"Some project details" section will be improved as the whole project functionality
+
+"Some project details" section will be improved as the whole project functionality
+Some docker images needs data persistence to work properly. This kind of data is not on this project.
