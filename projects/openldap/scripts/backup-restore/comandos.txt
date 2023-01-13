@@ -1,0 +1,5 @@
+#Busca un cn en concreto
+ldapsearch -x -H ldap://localhost -D cn=admin,dc=$username_ba_ldap,dc=local -y ~/pwdAdmin -b dc=$username_ba_ldap,dc=local -s sub -x "cn=02530657J" -LLL
+
+#Cambia password de un cn
+ldappasswd -H ldapi:/// -x -D "cn=admin,dc=$username_ba_ldap,dc=local" -W -S cn=02530657J,ou=UsuarisRegistrats,ou=extern,dc=$username_ba_ldap,dc=local

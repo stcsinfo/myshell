@@ -1,0 +1,23 @@
+version: '3'
+services:
+  openldap-local:
+    image: dinkel/openldap:latest
+    container_name: openldap-local
+    hostname: openldap-local
+    environment:
+        - SLAPD_DOMAIN=$username_ba_ldap.local
+        - SLAPD_PASSWORD=1nternet!
+        - SLAPD_CONFIG_PASSWORD=1nternet!
+    ports:
+        - 389:389
+        #- 636:636
+    volumes:
+      - ./imports:/etc/ldap.dist/prepopulate
+  ldap-phpadmin:
+    image: osixia/phpldapadmin:0.9.0
+    container_name: ldap-phpadmin
+    hostname: ldap-phpadmin
+    environment:
+        - PHPLDAPADMIN_LDAP_HOSTS=openldap-local
+    ports:
+        - 5389:443

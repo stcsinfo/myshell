@@ -1,0 +1,59 @@
+# init 
+# sudo systemctl stop k3s.service
+# /usr/local/bin/k3s-killall.sh
+# /usr/local/bin/k3s-uninstall.sh
+# sudo rm -rf /etc/cni/net.d
+# sudo rm -rf /var/lib/longhorn/*
+# sudo mkdir -p /etc/rancher/k3s
+# sudo nano /etc/rancher/k3s/config.yaml
+
+
+# IMPORTANT
+# delete etc database if re-install
+
+
+#   MASTER-0
+write-kubeconfig-mode: "0644"
+tls-san:
+  - "k8s-api.$domain_intra_stcs"
+node-name: "k8s-master0"
+node-ip: "master0_ip"
+resolv-conf: "/etc/resolv.conf"
+cluster-domain: "cluster.local"
+disable: "local-storage"
+kubelet-arg: ['log-flush-frequency=10s']
+kube-apiserver-arg: ['enable-aggregator-routing=true','etcd-count-metric-poll-period=0','etcd-db-metric-poll-interval=0','etcd-healthcheck-timeout=15s']
+etcd-disable-snapshots: "true"
+kube-controller-arg: ['node-monitor-period=10s','node-monitor-grace-period=60s']
+datastore-endpoint: "mysql://etcd_username:password@tcp(mysql.$domain_intra_stcs:3306)/etcd"
+---
+#   MASTERX
+
+token: token_from_server
+server: "https://k8s-api.$domain_intra_stcs:6443"
+write-kubeconfig-mode: "0644"
+tls-san:
+  - "k8s-api.$domain_intra_stcs"
+node-name: "k8s-master1"
+node-ip: "master1_ip"
+resolv-conf: "/etc/resolv.conf"
+cluster-domain: "cluster.local"
+disable: "local-storage"
+kubelet-arg: ['log-flush-frequency=10s']
+kube-apiserver-arg: ['enable-aggregator-routing=true','etcd-count-metric-poll-period=0','etcd-db-metric-poll-interval=0','etcd-healthcheck-timeout=15s']
+etcd-disable-snapshots: "true"
+kube-controller-arg: ['node-monitor-period=10s','node-monitor-grace-period=60s']
+datastore-endpoint: "mysql://etcd_username:password@tcp(mysql.$domain_intra_stcs:3306)/etcd"
+
+###
+---
+##MASTER 0
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.24.8+k3s1" K3S_CLUSTER_INIT="true" sh -
+journalctl -f --unit k3s.service
+---
+##MASTER X
+curl -sfL https://get.k3s.io | INSTALL_K3S_VERSION="v1.24.8+k3s1" sh -
+watch kubectl get nodes -A
+
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+sudo cat /var/lib/rancher/k3s/server/node-token

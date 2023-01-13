@@ -1,0 +1,7 @@
+Quotes 
+List
+    mc admin bucket quota pro/ap000
+Crea
+    mc admin bucket quota pro/ap000 --hard(fifo) 2MB
+
+

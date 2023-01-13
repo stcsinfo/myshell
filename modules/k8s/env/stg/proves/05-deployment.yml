@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proves-base-de-dades
+  namespace: proves
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      application: proves-base-de-dades
+      entorn: stg
+      tier: base-de-dades
+      tecnologia: mysql
+  template:
+    metadata:
+      labels:
+        application: proves-base-de-dades
+        entorn: stg
+        tier: base-de-dades
+        tecnologia: mysql
+    spec:
+      containers:
+      - name: proves-base-de-dades
+        image: mysql:5.7
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: 1nternet!
+        - name: MYSQL_DATABASE
+          value: wordpress
+        - name: MYSQL_USER
+          value: wordpress
+        - name: MYSQL_PASSWORD
+          value: 1nternet!
+        ports:
+        - containerPort: 3306
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.5"
+            memory: "128Mi"
+        volumeMounts:
+        - name: proves-base-de-dades
+          mountPath: /var/lib/mysql
+        #Aquest utilitza el pvc
+        - name: proves-dump
+          mountPath: /tmp
+        livenessProbe:
+          tcpSocket:
+            port: 3306
+          initialDelaySeconds: 15
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: 3306
+          initialDelaySeconds: 15
+          periodSeconds: 10
+      volumes:
+      - name: proves-base-de-dades
+        hostPath:
+          path: /mnt/Contingut/proves-base-de-dades
+      #Aquest utilitza el pvc
+      - name: proves-dump
+        persistentVolumeClaim:
+          claimName: proves-dump
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - "k8s-stg-master0"

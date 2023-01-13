@@ -1,0 +1,12 @@
+dn: cn=AP032PRE,ou=UsuarisBindServeis,ou=extern,dc=$username_ba_ldap,dc=local
+changetype: add
+objectClass: posixAccount
+objectClass: top
+objectClass: inetOrgPerson
+uid: AP032PRE
+cn: AP032PRE
+sn: AP032PRE
+uidNumber: 50000
+gidNumber: 50000
+userPassword: {SSHA}r+1YnXpE86J3/5TD5E/VicOwa09SY28u
+homeDirectory: /home/ap032pre

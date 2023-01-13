@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: apache
+  namespace: proves
+  labels:
+    application: apache
+    entorn: pro
+    tecnologia: apache
+    tier: frontal
+spec:
+  storageClassName: k8s-pro-b15390a-contingut
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

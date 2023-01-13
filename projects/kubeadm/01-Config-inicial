@@ -1,0 +1,102 @@
+###################################		Pasos iniciales	###################################
+https://www.howtoforge.com/how-to-setup-kubernetes-cluster-with-kubeadm-on-ubuntu-22-04/
+
+Ejecutar pasos archivo 1 - Configs sistema
+Ejecutar pasos archivo 2 - Software necesario
+Ejecutar pasos archivo 3 - Inicio nodo con kubeadm
+
+Servicios
+sudo systemctl status containerd.service 
+sudo systemctl status kubelet.service
+
+Checks kubectl
+
+Instalar CNI
+
+
+###################################		Puerto disponible	###################################
+
+nc 127.0.0.1 6443
+
+###################################		Hotname		###################################
+
+sudo hostnamectl set-hostname k8s-master0
+sudo echo master0_ip k8s-master0 >> /etc/hosts
+sudo echo master1_ip k8s-master1 >> /etc/hosts
+sudo echo master2_ip k8s-master2 >> /etc/hosts
+
+###################################		Firewall rules		###################################
+
+####	MASTERS   ####
+sudo ufw allow "OpenSSH"
+sudo ufw allow 6443/tcp
+sudo ufw allow 2379:2380/tcp
+sudo ufw allow 10250/tcp
+sudo ufw allow 10259/tcp
+sudo ufw allow 10257/tcp
+sudo ufw enable
+sudo ufw status
+
+####	WORKERS   ####
+sudo ufw allow 10250/tcp
+sudo ufw allow 30000:32767/tcp
+sudo ufw status
+
+###################################		Swap Off		###################################
+
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+sudo apt install dphys-swapfile -y
+sudo dphys-swapfile swapoff && sudo dphys-swapfile uninstall && sudo systemctl disable dphys-swapfile
+sudo apt purge dphys-swapfile -y
+sudo modprobe overlay
+sudo modprobe br_netfilter
+cat <<EOF | sudo tee /etc/modules-load.d/k8s.conf
+overlay
+br_netfilter
+EOF
+# sysctl params required by setup, params persist across reboots
+cat <<EOF | sudo tee /etc/sysctl.d/k8s.conf
+net.bridge.bridge-nf-call-iptables  = 1
+net.bridge.bridge-nf-call-ip6tables = 1
+net.ipv4.ip_forward = 1
+EOF
+# Apply sysctl params without reboot
+sudo sysctl --system
+sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab
+#Afegir a crontab de root per @reboot
+sudo swapoff -a
+
+
+###################################		Netplan		###################################
+
+#sudo nano /etc/netplan/01-cfg-master-0.yaml
+network:
+  version: 2
+  ethernets:
+    eth0:
+      dhcp4: false
+      dhcp6: false
+      addresses:
+        - master0_ip/24
+      routes:
+        - to: default
+          via: gateway_ip
+      nameservers:
+        addresses: [slave_server_ip]
+        search: [$domain_srv_stcs]
+      optional: true
+
+sudo rm -rf /etc/resolv.conf
+sudo ln -s /run/systemd/resolve/resolv.conf /etc/resolv.conf
+sudo netplan apply
+
+###################################		IPv6			###################################
+
+sudo su
+sudo echo net.ipv6.conf.all.disable_ipv6 = 1 >> /etc/sysctl.conf
+sudo echo net.ipv6.conf.default.disable_ipv6 = 1 >> /etc/sysctl.conf
+sudo echo net.ipv6.conf.lo.disable_ipv6 = 1 >> /etc/sysctl.conf
+sudo sysctl -p
+
+
+###################################		Reboot			###################################

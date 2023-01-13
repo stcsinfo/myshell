@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: apache-b
+  namespace: proves
+spec:
+  defaultBackend:
+    service:
+      name: apache-b
+      port:
+        number: 80
+  rules:
+  - host: apache2stg.$domain_stg_ba
+    http:
+      paths:
+      - backend:
+          service:
+            name: apache-b
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

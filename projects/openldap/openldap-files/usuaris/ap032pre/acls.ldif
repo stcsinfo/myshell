@@ -1,0 +1,4 @@
+olcAccess: {0}to attrs=userPassword by dn="cn=AP032PRE,ou=UsuarisBindServeis,ou=extern,dc=$username_ba_ldap,dc=local" write by dn="cn=AP079STG,ou=UsuarisBindServeis,ou=extern,dc=$username_ba_ldap,dc=local" write by self write by anonymous auth by * none
+olcAccess: {1}to attrs=shadowLastChange by self write by * read
+olcAccess: {2}to dn.subtree="ou=UsuarisRegistrats,ou=extern,dc=$username_ba_ldap,dc=local" by dn="cn=AP032PRE,ou=UsuarisBindServeis,ou=extern,dc=$username_ba_ldap,dc=local" manage
+olcAccess: {3}to dn.subtree="ou=ap079,ou=extern,dc=$username_ba_ldap,dc=local" by dn="cn=AP079STG,ou=UsuarisBindServeis,ou=extern,dc=$username_ba_ldap,dc=local" manage

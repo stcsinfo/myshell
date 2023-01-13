@@ -1,0 +1,18 @@
+;
+; BIND data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	$domain_intra_stcs root.$domain_intra_stcs. (
+		     2022121102		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@		IN	NS	$domain_intra_stcs.
+@		IN	A	master_server_ip
+@		IN	AAAA	::1
+k8s-api		IN	A	192.168.1.200
+rancherk8s	IN	A	192.168.1.201
+mysql		IN	A	master_server_ip
+jenkins		IN	A	192.168.1.204

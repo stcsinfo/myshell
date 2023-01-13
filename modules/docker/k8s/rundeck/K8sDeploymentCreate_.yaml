@@ -1,0 +1,63 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: Team-1/PRO/TestApp
+  id: 51f38de3-d79c-40dc-84bf-21b113b1434c
+  loglevel: INFO
+  name: Deploy
+  nodeFilterEditable: true
+  options:
+  - enforced: true
+    hidden: true
+    name: K8sContainerName
+    required: true
+    secure: true
+    value: httpd
+    valueExposed: true
+    values:
+    - httpd
+    valuesListDelimiter: ','
+  - enforced: true
+    hidden: true
+    name: K8sDeploymentName
+    required: true
+    secure: true
+    value: httpd
+    valueExposed: true
+    values:
+    - httpd
+    valuesListDelimiter: ','
+  - enforced: true
+    name: K8sImageName
+    required: true
+    value: httpd
+    values:
+    - httpd
+    valuesListDelimiter: ','
+  - name: K8sImageVersion
+    required: true
+  - enforced: true
+    hidden: true
+    name: K8sNamespace
+    required: true
+    secure: true
+    value: sistemes
+    valueExposed: true
+    values:
+    - sistemes
+    valuesListDelimiter: ','
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - jobref:
+        failOnDisable: true
+        group: CompositeSteps/K8s/PRO
+        importOptions: true
+        name: 'K8sDeploymentUpdate '
+        project: Z-Library
+        uuid: 8efe8844-3ff7-4ab6-a858-8093635a03f4
+    keepgoing: false
+    strategy: node-first
+  uuid: 51f38de3-d79c-40dc-84bf-21b113b1434c

@@ -1,0 +1,43 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Gitlab",
+            "Effect": "Allow",
+            "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:ListBucket",
+                "s3:DeleteObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::gitlab-artifacts",
+                "arn:aws:s3:::gitlab-artifacts/*",
+                "arn:aws:s3:::gitlab-backups",
+                "arn:aws:s3:::gitlab-backups/*",
+                "arn:aws:s3:::gitlab-dependency-proxy",
+                "arn:aws:s3:::gitlab-dependency-proxy/*",
+                "arn:aws:s3:::gitlab-lfs",
+                "arn:aws:s3:::gitlab-lfs/*",
+                "arn:aws:s3:::gitlab-mr-diffs",
+                "arn:aws:s3:::gitlab-mr-diffs/*",
+                "arn:aws:s3:::gitlab-packages",
+                "arn:aws:s3:::gitlab-packages/*",
+                "arn:aws:s3:::gitlab-pages",
+                "arn:aws:s3:::gitlab-pages/*",
+                "arn:aws:s3:::gitlab-pseudo",
+                "arn:aws:s3:::gitlab-pseudo/*",
+                "arn:aws:s3:::gitlab-registry",
+                "arn:aws:s3:::gitlab-registry/*",
+                "arn:aws:s3:::gitlab-runner-cache",
+                "arn:aws:s3:::gitlab-runner-cache/*",
+                "arn:aws:s3:::gitlab-terraform-state",
+                "arn:aws:s3:::gitlab-terraform-state/*",
+                "arn:aws:s3:::gitlab-tmp-backup",
+                "arn:aws:s3:::gitlab-tmp-backup/*",
+                "arn:aws:s3:::gitlab-uploads",
+                "arn:aws:s3:::gitlab-uploads/*"
+            ]
+        }
+    ]
+}

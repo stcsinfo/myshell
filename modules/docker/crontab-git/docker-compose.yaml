@@ -1,0 +1,9 @@
+version: "3"
+services:
+  crontab-git:
+      build:
+        context: '.'
+        dockerfile: ./Docker/.Dockerfile
+        args:
+          DOCKER_REGISTRY_CACHE: "docker.io"
+          IMATGE_APLICACIO : "bcnact-images/alpine:3.11"

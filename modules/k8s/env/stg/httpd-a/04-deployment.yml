@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: apache-a
+    namespace: proves
+spec:
+  selector:
+    matchLabels:
+      application: apache-a
+      entorn: pro
+      tecnologia: apache
+      tier: frontal
+  template:
+    metadata:
+      labels:
+        application: apache-a
+        entorn: pro
+        tecnologia: apache
+        tier: frontal
+    spec:
+      affinity: {}
+      containers:
+      - image: httpd
+        imagePullPolicy: Always
+        name: apache-a
+        ports:
+        - containerPort: 80
+          name: 80tcp
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 500m
+            memory: 512Mi
+          requests:
+            cpu: 500m
+            memory: 128Mi
+        volumeMounts:
+        - mountPath: /usr/local/apache2/htdocs
+          name: apache-a
+      volumes:
+      - name: apache-a
+        persistentVolumeClaim:
+          claimName: apache-a
+      - name: vol-rzxxk
+        persistentVolumeClaim:
+          claimName: apache-a

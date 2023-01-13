@@ -1,0 +1,33 @@
+{
+   "Statement":[
+      {
+         "Action":[
+            "s3:GetBucketLocation"
+         ],
+         "Effect":"Allow",
+         "Principal":{
+            "AWS":[
+               "*"
+            ]
+         },
+         "Resource":[
+            "arn:aws:s3:::ap069-wordpress"
+         ]
+      },
+      {
+         "Action":[
+            "s3:GetObject"
+         ],
+         "Effect":"Allow",
+         "Principal":{
+            "AWS":[
+               "*"
+            ]
+         },
+         "Resource":[
+            "arn:aws:s3:::ap069-wordpress/*"
+         ]
+      }
+   ],
+   "Version":"2012-10-17"
+}

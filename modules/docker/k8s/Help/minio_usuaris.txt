@@ -1,0 +1,11 @@
+https://docs.min.io/docs/minio-admin-complete-guide.html
+General
+    mc admin info pro
+    mc admin --json info pro
+
+Usuaris
+List
+    mc admin user list pro
+    mc admin user info pro ap000-usuari
+Crea
+    mc admin user add pro ap000-usuari 1nternet!

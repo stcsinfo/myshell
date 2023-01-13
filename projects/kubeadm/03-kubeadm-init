@@ -1,0 +1,48 @@
+###################################		Init		###################################
+#Archivo a tener en cuenta:
+/etc/kubernetes/admin.conf
+
+sudo kubeadm init --pod-network-cidr=192.168.102.0/16 \
+--apiserver-advertise-address=master0_ip \
+--service-cidr=192.168.152.0/16 \
+--apiserver-bind-port=6443 \
+--service-dns-domain=cluster.local \
+--apiserver-cert-extra-sans=master0_ip \
+--control-plane-endpoint=master0_ip \
+--cri-socket=unix:///run/containerd/containerd.sock \
+--dry-run
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+export KUBECONFIG=$HOME/.kube/config
+kubectl get pods -A
+
+---------------------------------------------
+
+Your Kubernetes control-plane has initialized successfully!
+
+To start using your cluster, you need to run the following as a regular user:
+
+  mkdir -p $HOME/.kube
+  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+Alternatively, if you are the root user, you can run:
+
+  export KUBECONFIG=/etc/kubernetes/admin.conf
+
+You should now deploy a pod network to the cluster.
+Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+You can now join any number of control-plane nodes by copying certificate authorities
+and service account keys on each node and then running the following as root:
+
+  kubeadm join master0_ip:6443 --token t9o4ak.l0axe3vqpfyzxim5 \
+	--discovery-token-ca-cert-hash sha256:7d8f321f2dd3d2199da61c77a2e84514838f718d95c6b6ee5edb5b5fa4ccfb0b \
+	--control-plane 
+
+Then you can join any number of worker nodes by running the following on each as root:
+
+kubeadm join master0_ip:6443 --token t9o4ak.l0axe3vqpfyzxim5 \
+	--discovery-token-ca-cert-hash sha256:7d8f321f2dd3d2199da61c77a2e84514838f718d95c6b6ee5edb5b5fa4ccfb0b 

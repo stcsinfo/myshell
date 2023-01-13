@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-b
+  namespace: proves
+  labels:
+      application: apache-b
+      entorn: pro
+      tecnologia: apache
+      tier: frontal
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:    
+    application: apache-b
+    entorn: pro
+  type: NodePort

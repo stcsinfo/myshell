@@ -1,0 +1,2 @@
+server: https://k8s-formacio-master0.$domain_srv_ba:9345
+token: # afegir TOKEN /var/lib/rancher/rke2/server/node-token de master0

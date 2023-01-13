@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ap034-ingress
+  namespace: ap034
+spec:
+  defaultBackend:
+    service:
+      name: ap034-service
+      port:
+        number: 8080
+  rules:
+  - host: piuk8s.$domain_intra_ba
+    http:
+      paths:
+      - backend:
+          service:
+            name: ap034-service
+            port:
+              number: 8080
+        path: /piu/wellcome.html
+        pathType: Prefix
+status:
+  loadBalancer:
+    ingress:
+    - ip: 172.16.202.20
+    - ip: 172.16.202.21
+    - ip: 172.16.202.22
+    - ip: 172.16.202.23

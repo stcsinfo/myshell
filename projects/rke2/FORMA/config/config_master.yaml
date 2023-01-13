@@ -1,0 +1,14 @@
+tls-san:
+- k8s-formacio.$domain_intra_ba
+- k8s-formacio-master0.$domain_srv_ba
+- 172.16.208.10
+write-kubeconfig-mode: "0644"
+node-ip: 172.16.208.10
+node-name: k8s-formacio-master0
+cluster-cidr: 172.35.0.0/16
+service-cidr: 172.34.0.0/16
+service-node-port-range: 30000-32767
+cluster-dns: 172.34.0.10
+cluster-domain: cluster-formacio.local
+resolv-conf: /run/systemd/resolve/resolv.conf
+cni: cilium

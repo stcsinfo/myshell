@@ -1,0 +1,61 @@
+- defaultTab: nodes
+  description: ''
+  executionEnabled: true
+  group: CompositeSteps/K8s/PRO
+  id: 8efe8844-3ff7-4ab6-a858-8093635a03f4
+  loglevel: INFO
+  name: 'K8sDeploymentUpdate '
+  nodeFilterEditable: false
+  options:
+  - enforced: true
+    name: K8sClusterURL
+    value: https://rancherk8s.$domain_intra_ba/k8s/clusters/local
+    values:
+    - https://rancherk8s.$domain_intra_ba/k8s/clusters/local
+    valuesListDelimiter: ','
+  - name: K8sContainerName
+    required: true
+  - name: K8sDeploymentName
+    required: true
+  - name: K8sImageName
+    required: true
+  - name: K8sImageVersion
+    required: true
+  - name: K8sNamespace
+    required: true
+  - name: K8sTimeout
+    value: 5m
+  - hidden: true
+    name: K8sToken
+    required: true
+    secure: true
+    storagePath: keys/common/k8s/cluster-pro/k8s-pro-admin-token
+    valueExposed: true
+  plugins:
+    ExecutionLifecycle: null
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - jobref:
+        args: -K8sImage ${option.K8sImageName}:${option.K8sImageVersion}
+        failOnDisable: true
+        group: SingleSteps/K8s
+        importOptions: true
+        name: K8sDeploymentUpdate
+        uuid: 9edd2005-a882-427e-847e-d20229ed909d
+    - errorhandler:
+        jobref:
+          failOnDisable: true
+          group: SingleSteps/K8s
+          importOptions: true
+          name: K8sDeploymentRollback
+          uuid: 41d42507-c034-4d08-960d-85b0de208cd5
+      jobref:
+        failOnDisable: true
+        group: SingleSteps/K8s
+        importOptions: true
+        name: K8sDeploymentStatus
+        uuid: fcda5290-5494-41f8-975b-d54e95ea6287
+    keepgoing: false
+    strategy: node-first
+  uuid: 8efe8844-3ff7-4ab6-a858-8093635a03f4

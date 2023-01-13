@@ -1,0 +1,3 @@
+dn: ou=UsuarisBindServeis,ou=extern,dc=$username_ba_ldap,dc=local
+objectClass: organizationalUnit
+ou: UsuarisBindServeis

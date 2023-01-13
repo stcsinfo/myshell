@@ -1,0 +1,14 @@
+sudo apt-key list
+sudo apt-key add /etc/apt/trusted.gpg.d/skype.gpg
+
+DF7587C3
+
+sudo apt-key export DF7587C3 | sudo gpg --dearmour -o /etc/apt/trusted.gpg.d/skype.gpg
+
+sudo nano /etc/apt/sources.list.d/skype
+arch=amd64 signed-by=/etc/apt/trusted.gpg.d/skype.gpg
+
+sudo apt-key --keyring /etc/apt/trusted.gpg del DF7587C3
+
+
+

@@ -1,0 +1,15 @@
+tls-san:
+- k8s-stg.$domain_stg_ba
+- k8s-stg-master0.$domain_srv_ba
+write-kubeconfig-mode: "0644"
+node-ip: 172.16.203.10
+node-name: k8s-stg-master0
+cluster-cidr: 172.33.0.0/16
+service-cidr: 172.32.0.0/16
+service-node-port-range: 30000-32767
+cluster-dns: 172.32.0.10
+cluster-domain: cluster-stg.local
+resolv-conf: /run/systemd/resolve/resolv.conf
+cni: cilium
+control-plane-resource-requests: kube-apiserver-cpu=6000m,kube-apiserver-memory=8192M,kube-scheduler-cpu=2000m,kube-scheduler-memory=4096M,etcd-cpu=4000m
+control-plane-resource-limits: kube-apiserver-cpu=12000m,kube-apiserver-memory=16384M,kube-scheduler-cpu=4000m,kube-scheduler-memory=8192M,etcd-cpu=8000m

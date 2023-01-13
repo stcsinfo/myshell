@@ -1,0 +1,30 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/var/cache/bind/zones.rfc1918";
+
+zone "$domain_pro_stcs" {
+    type slave;
+    file "/var/cache/bind/$domain_pro_stcs";
+    masters { master_server_ip; };
+};
+zone "$domain_srv_stcs" {
+    type slave;
+    file "/var/cache/bind/$domain_srv_stcs";
+    masters { master_server_ip; };
+};
+zone "$domain_intra_stcs" {
+    type slave;
+    file "/var/cache/bind/$domain_intra_stcs";
+    masters { master_server_ip; };
+};
+
+zone "1.168.192.in-addr.arpa" {
+        type slave;
+        notify no;
+        file "/var/cache/bind/db.192";
+        masters { master_server_ip; };
+};

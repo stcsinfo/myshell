@@ -1,0 +1,22 @@
+frontend SV011-FRONT-STG-slapd
+acl SV011-Port-389 dst_port eq 389
+acl SV011-Port-636 dst_port eq 636
+bind haproxy_ip:389
+bind haproxy_ip:636
+mode tcp
+use_backend SV011-BACK-STG-slapd-389 if SV011-Port-389
+use_backend SV011-BACK-STG-slapd-636 if SV011-Port-636
+
+backend SV011-BACK-STG-slapd-389
+balance roundrobin
+mode tcp
+option allbackups
+server master node_ip:389 check fall 3 rise 5 inter 2000 weight 10
+server slave node_ip:389 backup check fall 3 rise 5 inter 2000 weight 10
+
+backend SV011-BACK-STG-slapd-636
+balance roundrobin
+mode tcp
+option allbackups
+server master-ssl node_ip:636 check verify none fall 3 rise 1 inter 20000 weight 10
+server slave-ssl node_ip:636 backup check verify none fall 3 rise 1 inter 20000 weight 10

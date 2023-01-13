@@ -1,0 +1,26 @@
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+zone "$domain_pro_stcs" {
+    type master;
+    file "/etc/bind/$domain_pro_stcs";
+};
+zone "$domain_srv_stcs" {
+    type master;
+    file "/etc/bind/$domain_srv_stcs";
+};
+zone "$domain_intra_stcs" {
+    type master;
+    file "/etc/bind/$domain_intra_stcs";
+};
+
+zone "1.168.192.in-addr.arpa" {
+        type master;
+        notify no;
+        file "/etc/bind/db.192";
+};

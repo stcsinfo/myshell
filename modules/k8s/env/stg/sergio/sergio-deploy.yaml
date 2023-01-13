@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud-deployment
+  namespace: $USER
+  labels:
+    app: nextcloud-frontal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nextcloud-frontal
+  template:
+    metadata:
+      labels:
+        app: nextcloud-frontal
+    spec:
+      containers:
+      - name: nextcloud-frontal
+        image: nextcloud
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "512Mi"
+          requests:
+            cpu: "0.5"
+            memory: "128Mi"

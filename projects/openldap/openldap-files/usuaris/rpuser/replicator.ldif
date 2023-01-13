@@ -1,0 +1,6 @@
+dn: cn=replicator,dc=$username_ba_ldap,dc=local
+objectClass: simpleSecurityObject
+objectClass: organizationalRole
+cn: replicator
+description: Replication user
+userPassword: {SSHA}yZmHMHanPPdy/4axgpEFs9vGxnQdOlcr

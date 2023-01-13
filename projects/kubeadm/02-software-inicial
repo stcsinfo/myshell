@@ -1,0 +1,50 @@
+###################################		Updates OS		###################################
+
+sudo apt install raspi-config iftop net-tools -y
+sudo apt update && sudo apt dist-upgrade -y
+sudo raspi-config
+#set-time
+
+###################################		Containerd		###################################
+
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install containerd.io
+sudo systemctl stop containerd
+sudo mv /etc/containerd/config.toml /etc/containerd/config.toml.orig
+sudo containerd config default > /etc/containerd/config.toml
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+sudo systemctl start containerd
+sudo systemctl is-enabled containerd
+sudo systemctl status containerd
+
+#sudo nerdctl run -d -p 80:80 --name=nginx nginx
+#/etc/containerd/config.toml
+
+###################################		Helm			###################################
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+
+###################################		Kubeadm		###################################
+
+sudo apt install apt-transport-https ca-certificates curl -y
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+sudo apt update
+sudo apt install -qy kubelet=1.23.10-00 kubeadm=1.23.10-00 kubectl=1.23.10-00
+kubeadm config images pull
+sudo apt-mark hold kubelet kubeadm kubectl
+
+
+#Available version
+curl -s https://packages.cloud.google.com/apt/dists/kubernetes-xenial/main/binary-amd64/Packages | grep Version | awk '{print $2}'
+#Revisar configs de kubelet:
+#/var/lib/kubelet/config.yaml
+
+
+###################################		Reboot			###################################

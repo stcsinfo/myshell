@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+ name: proves-frontal
+ namespace: proves
+spec:
+  selector:
+    matchLabels:
+      application: proves-frontal
+      entorn: stg
+      tier: frontal
+      tecnologia: wordpress
+  serviceName: "proves-frontal"
+  replicas: 1
+  template:
+    metadata:
+     labels:
+      application: proves-frontal
+      entorn: stg
+      tier: frontal
+      tecnologia: wordpress
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: proves-frontal
+        image: wordpress
+        env:
+        - name: WORDPRESS_DB_HOST
+          value: proves-base-de-dades
+        - name: WORDPRESS_DB_NAME
+          value: wordpress
+        - name: WORDPRESS_DB_USER
+          value: wordpress
+        - name: WORDPRESS_DB_PASSWORD
+          value: 1nternet!
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: wp-php-options
+          mountPath: "/usr/local/etc/php/conf.d/uploads.ini"
+        - name: proves-frontal
+          mountPath: /var/www/html
+        resources:
+         limits:
+          cpu: "0.5"
+          memory: "512Mi"
+         requests:
+          cpu: "0.5"
+          memory: "128Mi"
+      volumes:
+      - name: wp-php-options
+        configMap:
+          name: wp-php-options
+          defaultMode: 0750
+        #Aquest pot reiniciar el contenidor  
+        #livenessProbe:
+        #  httpGet:
+        #    path: /
+        #    port: 80
+        #  initialDelaySeconds: 5
+        #  timeoutSeconds: 5
+        #  successThreshold: 1
+        #  failureThreshold: 3
+        #  periodSeconds: 10
+        #Aquest no reincia, fa que no rebi peticions  
+        #readinessProbe:
+        #  httpGet:
+        #    path: /
+        #    port: 80
+        #  initialDelaySeconds: 5
+        #  timeoutSeconds: 2
+        #  successThreshold: 1
+        #  failureThreshold: 3
+        #  periodSeconds: 10
+      affinity:
+         nodeAffinity:
+           requiredDuringSchedulingIgnoredDuringExecution:
+             nodeSelectorTerms:
+             - matchExpressions:
+               - key: kubernetes.io/hostname
+                 operator: In
+                 values:
+                 - "k8s-stg-worker0"
+  volumeClaimTemplates:
+  - metadata:
+      name: proves-frontal
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "k8s-stg-b15390a-contingut"
+      resources:
+        requests:
+          storage: 1Gi

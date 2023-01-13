@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: proves-quota
+  namespace: proves
+spec:
+  hard:
+    requests.cpu: '0.5'
+    requests.memory: 1Gi
+    limits.cpu: '1'
+    limits.memory: 2Gi
+    pods: '1'
+    persistentvolumeclaims: '3'
+    requests.storage: 3Gi

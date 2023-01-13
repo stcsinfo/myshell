@@ -1,0 +1,1 @@
+docker exec -it passbolt-passbolt-1 /bin/bash

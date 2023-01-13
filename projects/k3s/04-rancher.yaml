@@ -1,0 +1,32 @@
+#!/bin/bash
+kubectl create namespace cert-manager
+kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.7.1/cert-manager.crds.yaml
+
+
+###Rancher
+
+helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
+helm repo update
+kubectl create namespace cattle-system
+helm install rancher rancher-latest/rancher \
+--version v2.6.8  \
+--namespace cattle-system \
+--set hostname=rancher.$domain_intra_stcs \
+--set replicas=2
+watch kubectl get pod -n cattle-system
+
+
+helm repo add [name] [url]
+helm repo list
+helm search hub prometheus
+helm search repo rancher-stable
+
+$ helm repo add concourse https://concourse-charts.storage.googleapis.com/
+$ helm show chart concourse/concourse
+$ helm show values concourse/concourse
+
+helm dependency update
+
+helm install --dry-run ...
+
+

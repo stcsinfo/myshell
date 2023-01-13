@@ -1,0 +1,26 @@
+{
+        "version": "10",
+        "aliases": {
+                "pro": {
+                        "url": "https://store.$domain_pro_ba",
+                        "accessKey": "tYejpTOqt6QSetbo0BKx",
+                        "secretKey": "E0nufS11msFNN76MKzEbNKQfvZTaUhBgsCYa1C6t",
+                        "api": "S3v4",
+                        "path": "auto"
+                },
+                "pro-069": {
+                        "url": "https://store.$domain_pro_ba",
+                        "accessKey": "ap069-wordpress",
+                        "secretKey": "broadsidebushpokingmolarescapadewildfireenhanceprogrampraying",
+                        "api": "S3v4",
+                        "path": "auto"
+                },
+                "stg": {
+                        "url": "https://store.$domain_stg_ba",
+                        "accessKey": "tYejpTOqt6QSetbo0BKx",
+                        "secretKey": "E0nufS11msFNN76MKzEbNKQfvZTaUhBgsCYa1C6t",
+                        "api": "S3v4",
+                        "path": "auto"
+                }
+        }
+}

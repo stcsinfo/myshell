@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ap071-service
+  namespace: ap034
+  labels:
+    app: ap071-frontal
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: http
+    port: 443
+    protocol: TCP
+    targetPort: 443
+  selector:    
+    app: ap071-frontal
+  type: NodePort

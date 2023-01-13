@@ -1,0 +1,6 @@
+organization = $username_ba_ldap
+cn = slapd-stg-slave.$domain_srv_ba
+tls_www_server
+encryption_key
+signing_key
+expiration_days = 36500

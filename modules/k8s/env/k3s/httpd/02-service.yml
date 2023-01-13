@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache
+  namespace: proves
+  labels:
+    application: apache
+    entorn: pro
+    tecnologia: apache
+    tier: frontal
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    application: apache
+    entorn: pro
+  type: NodePort

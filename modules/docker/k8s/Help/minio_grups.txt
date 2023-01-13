@@ -1,0 +1,8 @@
+Grups
+List
+    mc admin group list pro
+    mc admin group info pro sistemes
+Crea
+    mc admin group add pro sistemes $USER
+Permisos
+    mc admin policy set pro readwrite group=ap000-usuari

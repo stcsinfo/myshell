@@ -1,0 +1,80 @@
+# Facilities
+alias cls="clear"
+alias free="free -mh"
+#alias ls="ls -lFah --color"
+alias ps="ps -elfj --forest | less -N"
+alias h="history"
+alias e="exit"
+alias clear_ram="sudo dash -c 'echo 1 > /proc/sys/vm/drop_caches'"
+alias keepass="keepassxc&"
+alias metasploit="sudo msfdb init && msfconsole"
+alias sqlmap_wizard="sqlmap --wizard"
+# core
+## core - scripts - commands 
+alias myshell="/bin/zsh $project_path/core/scripts/commands/myshell.sh"
+alias edit_shell="bash $project_path/core/scripts/commands/edit_shell.sh"
+alias checks="bash $project_path/core/scripts/commands/checks.sh"
+alias genera_password="bash $project_path/core/scripts/commands/genera_password.sh"
+# modules
+## modules - commands
+alias dock="bash $project_path/modules/commands/dock/dock.sh"
+alias mysql_commands="bash $project_path/modules/commands/mysql/mysql.sh"
+## modules - docker
+docker_groups=$(cat /etc/group | grep docker | awk -F: '{ printf $1}')
+docker_str="docker"
+if [ "$docker_groups" = "$docker_str" ]
+        then
+        alias dockrm="dash $project_path/modules/docker/dock/dockrm.sh"
+        alias mysql5="dash $project_path/modules/docker/mysql5/mysql5.sh"
+        alias mysql5_exec="dash $project_path/modules/docker/mysql5/mysql5_exec.sh"
+        alias mysql8="dash $project_path/modules/docker/mysql8/mysql8.sh"
+        alias mysql8_exec="dash $project_path/modules/docker/mysql8/mysql8_exec.sh"
+        alias tomcat9="dash $project_path/modules/docker/tomcat9/tomcat9.sh"
+        alias tomcat9_exec="dash $project_path/modules/docker/tomcat9/tomcat9_exec.sh"
+        alias apache="dash $project_path/modules/docker/apache/apache.sh"
+        alias openldap="dash $project_path/modules/docker/openldap/openldap.sh"
+        else
+        echo "Para usar docker debes pertenecer al grupo docker"
+fi
+## modules - k8s
+check_kubectl=$(kubectl &> /dev/null; echo $?)
+if [ "$check_kubectl" = "0" ]
+then
+        export k8s_env_path=""$project_path"/modules/k8s/env"
+        alias k3s="kubectl --kubeconfig ~/.kube/k3s"
+        alias api="bash $project_path/modules/k8s/menus/api/api.sh"
+        alias checks_k8s="bash $project_path/modules/k8s/menus/checks_k8s/checks_k8s.sh"
+        alias pod_state_ymls="bash $project_path/modules/k8s/menus/pod_state/ymls.sh"
+        alias pod_actions_exec="bash $project_path/modules/k8s/menus/pod_actions/exec.sh"
+        alias pod_actions_copy_from="bash $project_path/modules/k8s/menus/pod_actions/copy_from.sh"
+        alias pod_actions_logs="bash $project_path/modules/k8s/menus/pod_actions/logs.sh"
+        alias pod_actions_describe="bash $project_path/modules/k8s/menus/pod_actions/describe.sh"
+        alias pod_actions_labels="bash $project_path/modules/k8s/menus/pod_actions/labels.sh"
+        alias pvc="bash $project_path/modules/k8s/menus/storage/pvc.sh"
+        alias storage_pvc_elimina="bash $project_path/modules/k8s/menus/storage/pvc_elimina.sh"
+        alias storage_pv_released="bash $project_path/modules/k8s/menus/storage/pv_released.sh"
+        alias storage_pv_elimina="bash $project_path/modules/k8s/menus/storage/pv_elimina.sh"
+        alias rbac_crea="bash $project_path/modules/k8s/menus/rbac/crea_claus.sh"
+        alias rbac_elimina="bash $project_path/modules/k8s/menus/rbac/elimina_claus.sh"
+        alias secrets="bash $project_path/modules/k8s/menus/secrets/secrets.sh"
+else
+        blue;echo "no tiene kubectl";nocolor
+fi
+## modules - minikube
+alias minikube_launch="zsh $project_path/modules/minikube/menu.sh"
+## modules - ssh
+alias ssh_connect_stcs="bash $project_path/modules/ssh/ssh_connect/stcs/ssh.sh"
+alias ssh_connect_ba="bash $project_path/modules/ssh/ssh_connect/ba/ssh.sh"
+alias ssh_create="bash $project_path/modules/ssh/ssh_create/keys.sh"
+## modules - john
+check_john=$(john &> /dev/null; echo $?)
+if [ "$check_john" = "0" ]
+then
+        alias john_dictionary="bash $project_path/modules/john/dictionary/dictionary.sh"
+        alias john_unshadow="bash $project_path/modules/john/unshadow/unshadow.sh"
+        alias john_zip="bash $project_path/modules/john/zip/zip.sh"
+else
+        blue;echo "no tiene john";nocolor
+fi
+## modules - yt-dlp
+alias download="bash $project_path/modules/yt-dlp/yt-dlp.sh"

@@ -1,0 +1,7 @@
+server: https://k8s-pro.$domain_intra_ba:9345
+token: # afegir TOKEN /var/lib/rancher/rke2/server/node-token de master0
+resolv-conf: /run/systemd/resolve/resolv.conf
+control-plane-resource-requests: kube-apiserver-cpu=12000m,kube-apiserver-memory=8192M,kube-scheduler-cpu=4000m,kube-scheduler-memory=4096M,etcd-cpu=8000m
+control-plane-resource-limits: kube-apiserver-cpu=18000m,kube-apiserver-memory=16384M,kube-scheduler-cpu=8000m,kube-scheduler-memory=8192M,etcd-cpu=10000m
+node-ip: 172.16.202.20
+node-name: k8s-pro-worker0

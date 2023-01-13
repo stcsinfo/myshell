@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ap034-service
+  namespace: ap034
+  labels:
+    app: ap034-frontal
+spec:
+  externalTrafficPolicy: Local
+  ports:
+  - name: http
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:    
+    app: ap034-frontal
+  type: NodePort

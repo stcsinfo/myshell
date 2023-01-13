@@ -1,0 +1,14 @@
+mirrors:
+  docker.io:
+    endpoint:
+    - "https://nexus-registry-k8s.$domain_intra_ba"
+configs:
+  "nexus-registry-k8s.$domain_stg_ba":
+    auth:
+      username: $username_ba
+      password: AkxMhiGnwX1dZcGVRBaw2L3HM7cFuV
+    tls:
+      cert_file: /home/ssi/certs/2022/cert.crt
+      key_file: /home/ssi/certs/2022/key.key
+      ca_file: /home/ssi/certs/2022/ca.crt
+      insecure_skip_verify: true

@@ -1,0 +1,14 @@
+tls-san:
+- k8s-pro.$domain_intra_ba
+write-kubeconfig-mode: "0644"
+node-ip: 172.16.202.10
+node-name: k8s-pro-master0
+cluster-cidr: 172.31.0.0/16
+service-cidr: 172.30.0.0/16
+service-node-port-range: 30000-32767
+cluster-dns: 172.30.0.10
+cluster-domain: cluster-pro.local
+resolv-conf: /run/systemd/resolve/resolv.conf
+cni: cilium
+control-plane-resource-requests: kube-apiserver-cpu=12000m,kube-apiserver-memory=8192M,kube-scheduler-cpu=4000m,kube-scheduler-memory=4096M,etcd-cpu=8000m
+control-plane-resource-limits: kube-apiserver-cpu=18000m,kube-apiserver-memory=16384M,kube-scheduler-cpu=8000m,kube-scheduler-memory=8192M,etcd-cpu=10000m

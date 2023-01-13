@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nextcloud-ingress
+  namespace: $USER
+spec:
+  defaultBackend:
+    service:
+      name: nextcloud-service
+      port:
+        number: 80
+  rules:
+  - host: $USER.$domain_intra_ba
+    http:
+      paths:
+      - backend:
+          service:
+            name: nextcloud-service
+            port:
+              number: 80
+        path: /
+        pathType: Prefix

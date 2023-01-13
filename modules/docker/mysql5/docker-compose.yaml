@@ -1,0 +1,27 @@
+version: "3"
+services:
+  mysql5:
+    container_name: mysql5
+    build:
+      context: '.'
+      dockerfile: ./Docker/.Dockerfile
+      args:
+        DOCKER_REGISTRY_CACHE: "docker.io"
+        IMATGE_BASEDEDADES : "mysql:5.7"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./Docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "4036:3306"
+    restart: always
+    environment:
+      BCNACT_ENTORN: DEV
+      MYSQL_ROOT_PASSWORD: 1nternet!
+      MYSQL_DATABASE: sistemes
+      MYSQL_USER: sistemes
+      MYSQL_PASSWORD: 1nternet!
+volumes:
+  db_data: {}
+networks:   
+  default:
+    name: sistemes

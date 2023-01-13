@@ -1,0 +1,104 @@
+###################################		Pasos iniciales	###################################
+https://www.howtoforge.com/how-to-setup-kubernetes-cluster-with-kubeadm-on-ubuntu-22-04/
+
+Ejecutar pasos archivo 1 - Configs sistema
+Ejecutar pasos archivo 2 - Software necesario
+Ejecutar pasos archivo 3 - Inicio nodo k3s server
+
+Checks kubectl
+
+Instalar CNI
+
+
+###################################		Puerto disponible	###################################
+
+nc 127.0.0.1 6443
+
+###################################		cgroup		###################################
+
+#sudo nano /boot/cmdline.txt 
+ cgroup_memory=1 cgroup_enable=memory
+
+
+###################################		Hotname		###################################
+
+/etc/hosts - 127.0.1.1	k8s-master0
+/etc/hostname - k8s-master0 
+
+###################################		Firewall rules		###################################
+
+sudo iptables -F
+
+###################################		Swap Off		###################################
+
+sudo swapoff -a
+sudo dphys-swapfile swapoff ; sudo dphys-swapfile uninstall ; sudo update-rc.d dphys-swapfile remove ; sudo apt purge dphys-swapfile -y
+
+###################################		Network		###################################
+
+#sudo nano /etc/network/interfaces
+source /etc/network/interfaces.d/*
+auto eth0
+iface eth0 inet static
+address master0_ip
+netmask 255.255.0.0
+gateway 192.168.1.1
+dns-nameservers slave_server_ip
+dns-domain $domain_srv_stcs
+
+sudo systemctl restart networking.service
+
+
+###################################		NTP service (use own doc)		###################################
+
+###################################		IPv6 off		###################################
+
+sudo su
+# nano /etc/sysctl.d/98-disable_ipv6.conf
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+sudo sysctl -p
+
+###################################		WiFi/BlueT off		###################################
+
+sudo systemctl disable wpa_supplicant bluetooth hciuart rpi-display-backlight && apt purge pi-bluetooth wpasupplicant
+
+###################################		Servicios inn.		###################################
+
+sudo apt-get autoremove --purge sysstat
+
+systemctl disable avahi-daemon triggerhappy rng-tools packagekit
+systemctl stop avahi-daemon triggerhappy rng-tools packagekit
+apt purge avahi-daemon triggerhappy rng-tools packagekit
+
+sudo systemctl disable apt-daily.service
+sudo systemctl disable apt-daily.timer
+sudo systemctl disable apt-daily-upgrade.timer
+sudo systemctl disable apt-daily-upgrade.service
+
+###################################		Kernel parmtrs.	###################################
+
+sudo nano /etc/sysctl.d/90-kubelet.conf
+
+vm.panic_on_oom=0
+vm.overcommit_memory=1
+kernel.panic=10
+kernel.panic_on_oops=1
+kernel.keys.root_maxbytes=25000000
+
+sudo sysctl -p /etc/sysctl.d/90-kubelet.conf
+
+
+###################################		Remove SNAP		###################################
+
+snap list
+sudo snap remove app-name
+
+sudo umount /snap/core/<core-id>
+sudo umount /var/snap
+sudo apt purge snapd
+sudo rm -rf ~/snap /snap /var/snap /var/lib/snapd
+sudo apt autoremove
+
+
+###################################		Reboot			###################################

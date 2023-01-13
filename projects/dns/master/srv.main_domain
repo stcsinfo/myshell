@@ -1,0 +1,18 @@
+;
+; BIND data file for local loopback interface
+;
+$TTL	604800
+@	IN	SOA	$domain_srv_stcs root.$domain_srv_stcs. (
+		     2022121102		; Serial
+			 604800		; Refresh
+			  86400		; Retry
+			2419200		; Expire
+			 604800 )	; Negative Cache TTL
+;
+@		IN	NS	$domain_srv_stcs.
+@		IN	A	master_server_ip
+@		IN	AAAA	::1
+mind1		IN	A	slave_server_ip
+k8s-master0	IN	A	master0_ip
+k8s-master1	IN	A	master1_ip
+k8s-master2	IN	A	master2_ip

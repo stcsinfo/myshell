@@ -1,0 +1,14 @@
+###################################		Updates OS		###################################
+
+sudo apt install dos2unix iftop net-tools lm-sensors open-iscsi hdparm iptables nfs-common jq chrony -y
+sudo apt update && sudo apt upgrade -y
+sudo apt update ; sudo apt install -y rpi-eeprom
+sudo apt autoremove -y
+
+###################################		Helm			###################################
+
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+
+###################################		Reboot			###################################

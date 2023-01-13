@@ -1,0 +1,9 @@
+mirrors:
+  docker.io:
+    endpoint:
+      - "https://docker.io"
+configs:
+  "docker.io":
+    auth:
+      username: $username_ba
+      password: EU61CbYx9hmgx01W567Vo3f6C89cW5

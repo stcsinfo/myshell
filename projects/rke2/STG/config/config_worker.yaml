@@ -1,0 +1,5 @@
+server: https://k8s-stg-master0.$domain_srv_ba:9345
+token: # afegir TOKEN /var/lib/rancher/rke2/server/node-token de master0
+resolv-conf: /run/systemd/resolve/resolv.conf
+node-ip: 172.16.203.20
+node-name: k8s-stg-worker0

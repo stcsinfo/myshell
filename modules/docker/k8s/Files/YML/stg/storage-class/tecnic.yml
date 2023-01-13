@@ -1,0 +1,137 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  namespace: nfs-stg
+  name: k8s-stg-b15390b-tecnic
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: k8s/nfs
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  namespace: nfs-stg
+  name: nfs-client-provisioner
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: nfs-stg
+  name: nfs-client-provisioner-runner
+rules:
+  - apiGroups: [""]
+    resources: ["persistentvolumes"]
+    verbs: ["get", "list", "watch", "create", "delete"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["get", "list", "watch", "update"]
+  - apiGroups: ["storage.k8s.io"]
+    resources: ["storageclasses"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["list", "watch", "create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["endpoints"]
+    verbs: ["get", "list", "watch", "create", "update", "patch"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  namespace: nfs-stg
+  name: run-nfs-client-provisioner
+subjects:
+  - kind: ServiceAccount
+    name: nfs-client-provisioner
+    namespace: nfs-stg
+roleRef:
+  kind: ClusterRole
+  name: nfs-client-provisioner-runner
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: nfs-client-provisioner
+    namespace: nfs-stg
+spec:
+  selector:
+    matchLabels:
+      application: nfs-client-provisioner
+      entorn: pro
+  template:
+    metadata:
+      labels:
+        application: nfs-client-provisioner
+        entorn: pro
+    spec:
+      serviceAccount: nfs-client-provisioner
+      containers:
+        - name: nfs-client-provisioner
+          image: quay.io/external_storage/nfs-client-provisioner:v3.1.0-k8s1.11
+          volumeMounts:
+            - name: nfs-client-root
+              mountPath: /persistentvolumes
+          resources:
+            limits:
+              cpu: "4"
+              memory: "6096Mi"
+            requests:
+              cpu: "2"
+              memory: "4096Mi"
+          env:
+            - name: PROVISIONER_NAME
+              value: k8s/nfs
+            - name: NFS_SERVER
+              value: B15390BNFS.$username_ba # nodes will need nfs-common to access nfs protocol
+            - name: NFS_PATH
+              value: /vol/SV037_NFSSC_STG_Tecnic
+      volumes:
+        - name: nfs-client-root
+          nfs:
+            server: B15390BNFS.$username_ba
+            path: /vol/SV037_NFSSC_STG_Tecnic
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  namespace: nfs-stg
+  name: test-claim
+  annotations:
+    volume.beta.kubernetes.io/storage-class: "k8s-stg-b15390b-tecnic"
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Mi
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  namespace: nfs-stg
+  name: test-pod
+spec:
+  containers:
+  - name: test-pod
+    image: gcr.io/google_containers/busybox:1.24
+    command:
+      - "/bin/sh"
+    resources:
+      limits:
+        cpu: "4"
+        memory: "6096Mi"
+      requests:
+        cpu: "2"
+        memory: "4096Mi"
+    args:
+      - "-c"
+      - "touch /mnt/SUCCESS && exit 0 || exit 1"
+    volumeMounts:
+      - name: nfs-pvc
+        mountPath: "/mnt"
+  restartPolicy: "Never"
+  volumes:
+    - name: nfs-pvc
+      persistentVolumeClaim:
+        claimName: test-claim

@@ -1,0 +1,13 @@
+Permisos
+    mc admin policy list pro
+    mc admin policy set pro readwrite user=ap000-usuari
+    
+Afegir policy a minio
+    mc admin policy add pro ap000-bucket-policy ap000.txt
+
+Assignar policy a usuari
+    mc admin policy set pro ap000-bucket-policy user=ap000
+    mc policy set-json /mnt/IAM/repo-raw-bucket-policy.json pro/repo-raw
+
+Elimina policy
+    mc admin policy remove pro nom_policy

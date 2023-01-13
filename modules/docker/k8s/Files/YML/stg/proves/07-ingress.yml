@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: proves-ingress
+  namespace: proves
+  labels:
+    application: proves-frontal
+    entorn: stg
+    tier: frontal
+    tecnologia: k8s
+spec:
+  defaultBackend:
+    service:
+      name: proves-frontal
+      port:
+        number: 80
+  rules:
+  - host: proves.$domain_stg_ba
+    http:
+      paths:
+      - backend:
+          service:
+            name: proves-frontal
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+status:
+  loadBalancer:
+    ingress:
+    - ip: 172.16.203.20
